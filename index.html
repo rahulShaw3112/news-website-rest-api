@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Welcome</title>
+		<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+		<!-- Optional theme -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+		<link rel="stylesheet" href="css/style.css">
+		<!-- Latest compiled and minified JavaScript -->
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	</head>
+	<body ng-app="myApp" ng-controller="myCtrl">
+		<div class="container">
+			<div class="row header">
+				<div class="col-md-6">
+					<h1>The headliners</h1>
+				</div>
+				<div class="col-md-6 search-container">
+					<input type="text" value="" placeholder="search news" ng-model="searchinput">
+				</div>
+				
+			</div>
+		</div>
+		<div class="container">
+			<div class="row header-button">
+				<div class="header-news" ng-repeat="x in source" ng-click="changeurl($index)">
+					{{x.name}}
+				</div>
+			</div>
+		</div>
+		<br>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-3 col-xs-6" ng-repeat="x in news | filter : searchinput">
+					<div class="card" ng-click="redirectart($index)">
+						<img src="{{x.urlToImage}}" class="img-responsive" alt="">
+						<div class="content">
+							<h4>{{x.title}}</h4>
+							<h5>{{x.publishedAt}}</h5>
+							<p>{{x.description}}</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="js/angular.min.js"></script>
+		<script src="js/jquery.js"></script>
+		<script>
+
+			alert($("p").css('backgorund-color'));
+			var app = angular.module('myApp', []);
+			app.controller('myCtrl', function($scope, $http) {
+				$scope.dat='hello';
+				$scope.urli="";
+				
+			$scope.changeurl=function(x){
+				$scope.urli=$scope.source[x].urli;
+				$scope.fetchnews();
+			}
+			$scope.fetchnews=function(){
+				$http.get($scope.urli)
+			.then(function(response) {
+			$scope.news = response.data.articles;
+			});
+			}
+			$scope.redirectart=function(x){
+				window.location.href = $scope.news[x].url;
+			}
+				$scope.fetchnews();
+				$scope.source=[
+					{'name':'ABC News' , 'urli' : 'https://newsapi.org/v1/articles?source=abc-news-au&sortBy=top&apiKey=692d6ceed27d49d897ced49c838d81e2' },
+					{'name':'BBC News' , 'urli' : 'https://newsapi.org/v1/articles?source=bbc-news&sortBy=top&apiKey=692d6ceed27d49d897ced49c838d81e2' },
+					{'name':'CNN' , 'urli' : 'https://newsapi.org/v1/articles?source=cnn&sortBy=top&apiKey=692d6ceed27d49d897ced49c838d81e2' },
+					{'name':'BBC Sport' , 'urli' : 'https://newsapi.org/v1/articles?source=bbc-sport&sortBy=top&apiKey=692d6ceed27d49d897ced49c838d81e2' },
+					{'name':'bloomberg' , 'urli' : 'https://newsapi.org/v1/articles?source=bloomberg&sortBy=top&apiKey=692d6ceed27d49d897ced49c838d81e2' },
+					{'name':'business-insider-uk' , 'urli' : 'https://newsapi.org/v1/articles?source=business-insider-uk&sortBy=top&apiKey=692d6ceed27d49d897ced49c838d81e2' },
+					{'name':'buzzfeed' , 'urli' : 'https://newsapi.org/v1/articles?source=buzzfeed&sortBy=top&apiKey=692d6ceed27d49d897ced49c838d81e2' },
+					{'name':'cnbc' , 'urli' : 'https://newsapi.org/v1/articles?source=cnbc&sortBy=top&apiKey=692d6ceed27d49d897ced49c838d81e2' },
+					{'name':'daily mail' , 'urli' : 'https://newsapi.org/v1/articles?source=daily-mail&sortBy=top&apiKey=692d6ceed27d49d897ced49c838d81e2' },
+					{'name':'engadget' , 'urli' : 'https://newsapi.org/v1/articles?source=engadget&sortBy=top&apiKey=692d6ceed27d49d897ced49c838d81e2' },
+					{'name':'entertainment weekly' , 'urli' : 'https://newsapi.org/v1/articles?source=entertainment-weekly&sortBy=top&apiKey=692d6ceed27d49d897ced49c838d81e2' },
+					{'name':'espn' , 'urli' : 'https://newsapi.org/v1/articles?source=espn&sortBy=top&apiKey=692d6ceed27d49d897ced49c838d81e2' },
+				];
+				
+			});
+		</script>
+	</body>
+</html>
